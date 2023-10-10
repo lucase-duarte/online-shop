@@ -1,0 +1,31 @@
+<%- include('../includes/head') %>
+</head>         
+<body>
+  <%- include('../includes/nav') %>
+      <main class="p-5 mt-5 d-flex flex-column align-items-center flex-md-row justify-content-md-center flex-wrap gap-4"> 
+        <% if(products.length > 0) { %>
+          <% for(let product of products) { %>
+            <div class="card text-center rounded-0 bg-body-tertiary">
+              <div class="img-container">
+                <img src="<%= product.url %>" class="card-img-top rounded-0" alt="imagem do produto">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><%= product.name %></h5>
+                <p class="card-text text-truncate text-secondary"><%= product.description %></p>
+              </div>
+              <div class="card-footer bg-body-tertiary fw-bold fs-4">
+                <h3 class="fw-bold">R$<%= product.price %></h3>
+                <form class="d-flex justify-content-between" method="POST" action="/admin/delete-product/<%= product.id %>">
+                    <button type="submit" class="btn btn-outline-danger">Deletar</button>
+                    <a href="/admin/edit-product/<%= product.id %>" class="btn btn-outline-success">Editar</a>
+                </form>
+              </div>
+              <a href="/admin/admin-product-detail/<%= product.id %>" class="stretched-link"></a>
+            </div>
+          <% } %>
+        <% } else { %>
+              <h1>Nenhum produto encontrado.</h1>
+          <% } %>
+      </main>
+
+      <%- include('../includes/footer') %>

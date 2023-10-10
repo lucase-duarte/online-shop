@@ -1,0 +1,29 @@
+<%- include('../includes/head') %>
+</head>         
+<body>
+  <%- include('../includes/nav') %>
+      <main class="p-5 mt-4 d-flex justify-content-center">
+        <form class="w-100" action="/admin/add-product" method="POST">
+          <div class="mb-3">
+            <label for="productName" class="form-label">Nome</label>
+            <input type="text" class="form-control rounded-0" id="productName" name="productName">
+          </div>
+          <div class="mb-3">
+            <label for="productImage" class="form-label">URL da imagem</label>
+            <input type="text" class="form-control rounded-0" id="productImage" name="productImage">
+          </div>
+          <div class="mb-3">
+            <label for="productPrice" class="form-label">Preço</label>
+            <input type="text" class="form-control rounded-0" id="productPrice" name="productPrice">
+          </div>
+          <div class="mb-5">
+            <label for="productDescription" class="form-label">Descrição</label>
+            <textarea name="productDescription" id="productDescription" class="form-control rounded-0"></textarea>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary rounded-0 px-4 py-2 fw-medium">Adicionar</button>
+          </div>
+        </form>
+      </main>
+
+      <%- include('../includes/footer') %>

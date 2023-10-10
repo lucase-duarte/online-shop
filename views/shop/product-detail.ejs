@@ -1,0 +1,22 @@
+<%- include('../includes/head') %>
+</head>         
+<body>
+  <%- include('../includes/nav') %>
+      <main class="p-5 product-detail mx-auto">
+        <h3 class="mb-3"><%= product.name %></h3>
+        <div class="img-container">
+            <img src="<%= product.url %>" alt="Imagem do produto">
+        </div>
+        <div class="product-info text-wrap">
+          <p class="mt-5 mb-4 text-secondary"><%= product.description %></p>
+          <hr>
+          <div class="text-center">
+            <h2>R$<%= product.price %></h4> 
+              <form class="d-block mx-auto" method="POST" action="/cart">
+                <input type="hidden" value="<%= product.id %>" name="productId">
+                <button type="submit" class="btn btn-outline-primary rounded-0 fw-semibold p-2 fs-5">Adicionar ao carrinho</button>
+            </form>
+          </div>
+        </div>
+      </main>
+      <%- include('../includes/footer') %>

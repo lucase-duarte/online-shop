@@ -1,0 +1,37 @@
+<%- include('../includes/head') %>
+</head>         
+<body>
+  <%- include('../includes/nav') %>
+     <main class="p-5 mt-5 text-center">
+        <% if(cart.products.length > 0) { %>
+            <table class="table table-striped">      
+                <% for(let product of cart.products) { %>
+                    <tr>
+                        <td class="d-flex justify-content-between p-0">
+                            <div class="cart-product d-flex justify-content-between gap-4">
+                                <div class="img-icon">
+                                    <img src="<%= product.url %>" alt="product image">
+                                </div>
+                                <div class="d-flex flex-column align-self-center text-start">
+                                    <p class="m-0"><span class="fw-semibold">Nome:</span> <%= product.name %></p>
+                                    <p class="m-0"><span class="fw-semibold">Quantidade:</span> <%= product.quantity %></p>
+                                    <p class="m-0"><span class="fw-semibold">Preço:</span> R$<%= product.price %></p>
+                                    <hr class="m-0">
+                                    <p class="m-0"><strong>subtotal:</strong> <%= product.price * product.quantity %></p>
+                                </div>
+                            </div>
+                            <div class="my-auto me-4">
+                                <form action="/delete-cart-product/<%= product.id %>" method="POST">
+                                    <button class="btn btn-outline-danger fw-semibold">X</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
+            </table>
+        <% } else { %>
+                <h1>Seu carrinho está vazio :(</h1>
+        <% } %>
+     </main>
+
+<%- include('../includes/footer') %>
