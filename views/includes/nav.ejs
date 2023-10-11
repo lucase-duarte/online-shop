@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-md bg-success" data-bs-theme="dark">
+
     <div class="container-fluid">
+
       <a class="navbar-brand text-white" href="#">Online Shop</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -13,12 +15,14 @@
             <a class="nav-link <%= currentPage == 'cart' ? 'active' : '' %>" href="/cart">Carrinho <span class="badge text-bg-primary"><%= cart.products.length > 0 ? cart.products.length : ''  %></span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <%= currentPage == 'admin-products' ? 'active' : '' %>" href="/admin/admin-products">Produtos (admin)</a>
+            <a class="nav-link <%= currentPage == 'admin-products' ? 'active' : '' %>" href="/admin/admin-products">Produtos(admin)</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <%= currentPage == 'add-product' ? 'active' : '' %>" href="/admin/add-product">Adicionar produto (admin)</a>
+            <a class="nav-link <%= currentPage == 'add-product' ? 'active' : '' %>" href="/admin/add-product">Adicionar produto(admin)</a>
           </li>
         </ul>
       </div>
+
     </div>
+
   </nav>

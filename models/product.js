@@ -3,65 +3,78 @@ const path = require('path')
 const p = path.join(__dirname, '..', 'data', 'products.json')
 
 class Product {
+
     id = Math.random() * 10 .toString()
     name
     url
     price
     description
+
     constructor(name, url, price, description) {
       this.name = name;
       this.url = url;
       this.price = price;
       this.description = description;
+
     }
 
     save() {
-      let products = readFile()
-      products.push(this)
-      products = JSON.stringify(products)
- 
-      fs.writeFileSync(p, products, (err) => {
-        console.log(err)
-      })    
+
+      readFile(products => {
+        products.push(this)
+        products = JSON.stringify(products)
+        writeFile(products)
+      })
+
     }
 
-    static fetchAll() {
-      return readFile()
+    static fetchAll(cb) {
+
+       readFile(cb)
+
     }
 
     static saveChanges(products) {
+
       products = JSON.stringify(products)
+      writeFile(products)
 
-      fs.writeFileSync(p, products, (err) => {
-        console.log(err)
-      })    
     }
 
-    static findById(productId) {
-      const products = this.fetchAll()
-      const product = products.find(p => p.id == productId)
-      return product
+    static findById(productId, cb) {
+
+      this.fetchAll(products => {
+        const product = products.find(p => p.id == productId)
+        cb(product)
+      })
+
     }
+
   }
 
-   function readFile() {
-    let products = []
-    let data
+   function readFile(cb) {
 
-    try {
-      data = fs.readFileSync(p)
-    }
+    fs.readFile(p, (err, data) => {
+      if(err) {
+        console.log(err)
+        cb([])
+      }
+      
+      else {
+        cb(JSON.parse(data))
+      }
+    })
 
-    catch(err) {
-      console.log(err)
-    }
+  }
+
+  function writeFile(products) {
+
+    fs.writeFile(p, products, (err) => {
+      if(err) {
+        console.log(err)
+      }
+    })
     
-    if(data) {
-      products = JSON.parse(data)
-    }
-
-    return products
-
   }
 
 

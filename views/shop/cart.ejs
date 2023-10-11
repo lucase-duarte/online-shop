@@ -1,6 +1,7 @@
 <%- include('../includes/head') %>
 </head>         
 <body>
+
   <%- include('../includes/nav') %>
      <main class="p-5 mt-5 text-center">
         <% if(cart.products.length > 0) { %>
@@ -29,9 +30,12 @@
                     </tr>
                 <% } %>
             </table>
+            <h1 class="mt-5">Total: R$<%= cart.totalPrice %></h1>
         <% } else { %>
                 <h1>Seu carrinho está vazio :(</h1>
         <% } %>
+
+
      </main>
 
 <%- include('../includes/footer') %>
