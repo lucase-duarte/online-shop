@@ -12,7 +12,10 @@
             <a class="nav-link <%= currentPage == 'index' ? 'active' : '' %>" href="/">Produtos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <%= currentPage == 'cart' ? 'active' : '' %>" href="/cart">Carrinho <span class="badge text-bg-primary"><%= cart.products.length > 0 ? cart.products.length : ''  %></span></a>
+            <a class="nav-link <%= currentPage == 'cart' ? 'active' : '' %>" href="/cart">Carrinho <span class="badge text-bg-primary"><%= cart.items.length > 0 ? cart.items.length : ''  %></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= currentPage == 'orders' ? 'active' : '' %>" href="/orders">Pedidos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link <%= currentPage == 'admin-products' ? 'active' : '' %>" href="/admin/admin-products">Produtos(admin)</a>

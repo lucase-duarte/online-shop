@@ -3,7 +3,7 @@
 <body>
   <%- include('../includes/nav') %>
       <main class="p-5 mt-4 d-flex justify-content-center">
-        <form class="w-100" action="/admin/edit-product/<%= product.id %>" method="POST">
+        <form class="w-100" action="/admin/edit-product/<%= product._id %>" method="POST">
           <div class="mb-3">
             <label for="productName" class="form-label">Nome</label>
             <input type="text" class="form-control rounded-0" id="productName" name="productName" value="<%= product.name %>">

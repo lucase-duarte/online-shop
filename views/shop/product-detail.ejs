@@ -13,7 +13,7 @@
           <div class="text-center">
             <h2>R$<%= product.price %></h4> 
               <form class="d-block mx-auto" method="POST" action="/cart">
-                <input type="hidden" value="<%= product.id %>" name="productId">
+                <input type="hidden" value="<%= product._id %>" name="productId">
                 <button type="submit" class="btn btn-outline-primary rounded-0 fw-semibold p-2 fs-5">Adicionar ao carrinho</button>
             </form>
           </div>

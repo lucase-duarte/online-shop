@@ -12,4 +12,8 @@ router.post('/cart', shopController.postCart)
 
 router.post('/delete-cart-product/:id', shopController.postDeleteCartProduct)
 
+router.get('/orders', shopController.getOrders)
+
+router.post('/orders', shopController.postOrders)
+
 module.exports = router

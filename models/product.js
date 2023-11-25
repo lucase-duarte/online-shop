@@ -1,81 +1,71 @@
-const fs = require('fs')
-const path = require('path')
-const p = path.join(__dirname, '..', 'data', 'products.json')
+const mongodb = require('mongodb')
+const getDb = require('../util/database').getDb
 
 class Product {
-
-    id = Math.random() * 10 .toString()
-    name
-    url
-    price
-    description
-
-    constructor(name, url, price, description) {
-      this.name = name;
-      this.url = url;
-      this.price = price;
-      this.description = description;
-
-    }
-
-    save() {
-
-      readFile(products => {
-        products.push(this)
-        products = JSON.stringify(products)
-        writeFile(products)
-      })
-
-    }
-
-    static fetchAll(cb) {
-
-       readFile(cb)
-
-    }
-
-    static saveChanges(products) {
-
-      products = JSON.stringify(products)
-      writeFile(products)
-
-    }
-
-    static findById(productId, cb) {
-
-      this.fetchAll(products => {
-        const product = products.find(p => p.id == productId)
-        cb(product)
-      })
-
-    }
-
+  constructor(name, url, price, description, id) {
+    this.name = name
+    this.url = url
+    this.description = description
+    this.price = price
+    this._id = id ? new mongodb.ObjectId(id) : null
   }
 
-   function readFile(cb) {
+  save() {
+    let query
+    const db = getDb()
 
-    fs.readFile(p, (err, data) => {
-      if(err) {
-        console.log(err)
-        cb([])
-      }
-      
-      else {
-        cb(JSON.parse(data))
-      }
+    if(this._id) {
+      query = db.collection('products').updateOne({_id: this._id}, {$set: this})
+    }
+
+    else {
+      query = db.collection('products').insertOne(this)
+    }
+
+    return query
+    .then(result => {
+      console.log(result)
     })
-
-  }
-
-  function writeFile(products) {
-
-    fs.writeFile(p, products, (err) => {
-      if(err) {
-        console.log(err)
-      }
+    .catch(err => {
+      console.log(err)
     })
-    
   }
 
+  static fetchAll() {
+    const db = getDb()
+
+    return db.collection('products').find().toArray()
+    .then(products => {
+      return products
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+  static findById(productId) {
+    const db = getDb()
+
+    return db.collection('products').findOne({_id: new mongodb.ObjectId(productId)})
+    .then(product => {
+      return product
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+  static deleteById(productId) {
+    const db = getDb()
+
+    return db.collection('products').deleteOne({_id: new mongodb.ObjectId(productId)})
+    .then(result => {
+      console.log(result)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+}
 
   module.exports = Product

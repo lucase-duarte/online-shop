@@ -4,9 +4,9 @@
 
   <%- include('../includes/nav') %>
      <main class="p-5 mt-5 text-center">
-        <% if(cart.products.length > 0) { %>
+        <% if(cart.items.length > 0) { %>
             <table class="table table-striped">      
-                <% for(let product of cart.products) { %>
+                <% for(let product of cart.items) { %>
                     <tr>
                         <td class="d-flex justify-content-between p-0">
                             <div class="cart-product d-flex justify-content-between gap-4">
@@ -18,11 +18,11 @@
                                     <p class="m-0"><span class="fw-semibold">Quantidade:</span> <%= product.quantity %></p>
                                     <p class="m-0"><span class="fw-semibold">Preço:</span> R$<%= product.price %></p>
                                     <hr class="m-0">
-                                    <p class="m-0"><strong>subtotal:</strong> <%= product.price * product.quantity %></p>
+                                    <p class="m-0"><strong>subtotal:</strong> <%= (product.price * product.quantity).toFixed(2) %></p>
                                 </div>
                             </div>
                             <div class="my-auto me-4">
-                                <form action="/delete-cart-product/<%= product.id %>" method="POST">
+                                <form action="/delete-cart-product/<%= product._id %>" method="POST">
                                     <button class="btn btn-outline-danger fw-semibold">X</button>
                                 </form>
                             </div>
@@ -30,12 +30,12 @@
                     </tr>
                 <% } %>
             </table>
-            <h1 class="mt-5">Total: R$<%= cart.totalPrice %></h1>
+            <h1 class="mt-5 mb-3">Total: R$<%= cart.totalPrice.toFixed(2) %></h1>
+            <form action="/orders" method="POST" class="mx-auto">
+                <button class="btn btn-primary mx-auto rounded-0 fs-5 p-2 fw-semibold">Finalizar pedido</button>
+            </form>
         <% } else { %>
                 <h1>Seu carrinho está vazio :(</h1>
         <% } %>
-
-
      </main>
-
 <%- include('../includes/footer') %>

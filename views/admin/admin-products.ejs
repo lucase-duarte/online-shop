@@ -15,12 +15,12 @@
               </div>
               <div class="card-footer bg-body-tertiary fw-bold fs-4">
                 <h3 class="fw-bold">R$<%= product.price %></h3>
-                <form class="d-flex justify-content-between" method="POST" action="/admin/delete-product/<%= product.id %>">
-                    <button type="submit" class="btn btn-outline-danger">Deletar</button>
-                    <a href="/admin/edit-product/<%= product.id %>" class="btn btn-outline-success">Editar</a>
+                <form class="d-flex justify-content-between" method="POST" action="/admin/delete-product/<%= product._id %>">
+                    <button type="submit" class="btn btn-outline-danger rounded-0">Deletar</button>
+                    <a href="/admin/edit-product/<%= product._id %>" class="btn btn-outline-success rounded-0">Editar</a>
                 </form>
               </div>
-              <a href="/admin/admin-product-detail/<%= product.id %>" class="stretched-link"></a>
+              <a href="/admin/admin-product-detail/<%= product._id %>" class="stretched-link"></a>
             </div>
           <% } %>
         <% } else { %>

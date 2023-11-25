@@ -1,58 +1,81 @@
 const path = require('path')
 const Product = require('../models/product')
-const Cart = require('../models/cart')
 
 exports.getIndex = (req, res) => {
+const user = req.user
 
-    Product.fetchAll(products => {
-        Cart.getCart(cart => {
-            res.render(path.join(__dirname, '..', 'views', 'shop', 'index'), {products: products, pageTitle: 'Online Shop', currentPage: 'index', cart: cart})
+    Product.fetchAll()
+    .then(products => {
+        user.getCartItems()
+        .then(cartItems => {
+            res.render(path.join(__dirname, '..', 'views', 'shop', 'index'), {products: products, pageTitle: 'Online Shop', currentPage: 'index', cart: {items: cartItems}})
         })
     })
-
 }
 
 exports.getProductDetail = (req, res) => {
-
     const productId = req.params.id
+    const user = req.user
 
-    Product.findById(productId, product => {
-        Cart.getCart(cart => {
-            res.render(path.join(__dirname, '..', 'views', 'shop', 'product-detail'), {product: product, pageTitle: product.name, currentPage: 'index', cart: cart})
+    Product.findById(productId)
+    .then(product => {
+        user.getCartItems()
+        .then(cartItems => {
+            res.render(path.join(__dirname, '..', 'views', 'shop', 'product-detail'), {product: product, pageTitle: product.name, currentPage: 'index', cart: {items: cartItems}})
         })
     })
-
 }
 
 exports.getCart = (req, res) => {
-
-    Cart.getCart(cart => {
-        res.render(path.join(__dirname, '..', 'views', 'shop', 'cart'), {pageTitle: 'Carrinho', currentPage: 'cart', cart: cart})
+    const user = req.user
+    
+    user.getCartItems()
+    .then(cartItems => {
+        res.render(path.join(__dirname, '..', 'views', 'shop', 'cart'), {pageTitle: 'Carrinho', currentPage: 'cart', cart: {items: cartItems, totalPrice: user.cart.totalPrice}})
     })
-
 }
 
 exports.postCart = (req, res) => {
-
     const productId = req.body.productId
+    const user = req.user
 
-    Cart.addProduct(productId)
-    res.redirect('/')
-
+    Product.findById(productId)
+    .then(product => {
+        return user.addToCart(product)
+    })
+    .then(() => {
+        res.redirect('/')
+    })
 }
 
 exports.postDeleteCartProduct = (req, res) => {
-
     const productId = req.params.id
+    const user = req.user
 
-    Cart.getCart(cart => {
-        const product = cart.products.find((p) => p.id == productId)
-        
-        cart.totalPrice -= product.price * product.quantity
-        cart.products = cart.products.filter(p => p.id != productId)
-        Cart.updateCart(cart)
-        res.redirect('/cart')
-    })
-
+   user.deleteFromCart(productId)
+   .then((result) => {
+    console.log(result)
+    res.redirect('/cart')
+   })
 }
 
+exports.getOrders = (req, res) => {
+    const user = req.user
+
+    user.getOrders()
+    .then(orders => {
+        user.getCartItems()
+        .then(cartItems => {
+            res.render(path.join(__dirname, '..', 'views', 'shop', 'orders'), {pageTitle: 'Pedidos', currentPage: 'orders', cart: {items: cartItems}, orders: orders})
+        })
+    })
+}
+
+exports.postOrders = (req, res) => {
+    const user = req.user
+
+    user.createOrder()
+    .then(() => {
+        res.redirect('/')
+    })
+}

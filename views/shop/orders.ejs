@@ -1,0 +1,23 @@
+<%- include('../includes/head') %>
+</head>         
+<body>
+
+  <%- include('../includes/nav') %>
+     <main class="p-5 mt-5">
+        <% if(orders.length > 0) { %>
+            <div class="">      
+                <% for(let order of orders) { %>
+                    <div class="mb-3 bg-body-tertiary p-3 border">
+                        <h4>Pedido#<%= order._id %></h4>
+                        <% for(let i of order.items) { %>
+                            <p class="mb-1 fw-semibold" ><%= i.name %> (x<%= i.quantity %>)</p>
+                            <% } %>
+                            <p class="fw-bolder mb-0">Valor total: R$<%= order.totalPrice.toFixed(2) %></p>
+                    </div>
+                <% } %>
+                </div>
+        <% } else { %>
+                <h1>Você não fez nenhum pedido :(</h1>
+        <% } %>
+     </main>
+<%- include('../includes/footer') %>

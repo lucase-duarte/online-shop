@@ -1,17 +1,16 @@
 const path = require('path')
 const Product = require('../models/product')
-const Cart = require('../models/cart')
 
 exports.getAddProduct = (req, res) => {
+const user = req.user
 
-    Cart.getCart(cart => {
-        res.render(path.join(__dirname, '..', 'views', 'admin', 'add-product'), {pageTitle: 'Adicionar produto', currentPage: 'add-product', cart: cart})
+    user.getCartItems()
+    .then(cartItems => {
+        res.render(path.join(__dirname, '..', 'views', 'admin', 'add-product'), {pageTitle: 'Adicionar produto', currentPage: 'add-product', cart: {items: cartItems}})
     })
-
 }
 
 exports.postAddProduct = (req, res) => {
-
     const name = req.body.productName
     const url = req.body.productImage
     const price = req.body.productPrice
@@ -19,82 +18,68 @@ exports.postAddProduct = (req, res) => {
     const product = new Product(name, url, price, description)
 
     product.save()
-    res.redirect('/')
-
+    .then(() => {
+        res.redirect('/')
+    })
 }
 
 exports.getAdminProducts = (req, res) => {
+const user = req.user
 
-    Product.fetchAll(products => {
-        Cart.getCart(cart => {
-            res.render(path.join(__dirname, '..', 'views', 'admin', 'admin-products'), {products: products, pageTitle: 'Produtos(admin)', currentPage: 'admin-products', cart: cart})
+    Product.fetchAll()
+    .then(products => {
+        user.getCartItems()
+        .then(cartItems => {
+            res.render(path.join(__dirname, '..', 'views', 'admin', 'admin-products'), {products: products, pageTitle: 'Produtos(admin)', currentPage: 'admin-products', cart: {items: cartItems}})
         })
     })
-
 }
 
 exports.getProductDetail = (req, res) => {
-
     const productId = req.params.id
+    const user = req.user
 
-    Product.findById(productId, product => {
-        Cart.getCart(cart => {
-            res.render(path.join(__dirname, '..', 'views', 'admin', 'admin-product-detail'), {product: product, pageTitle: product.name, currentPage: 'admin-product-detail', cart: cart})
+    Product.findById(productId)
+    .then(product => {
+        user.getCartItems()
+        .then(cartItems => {
+            res.render(path.join(__dirname, '..', 'views', 'admin', 'admin-product-detail'), {product: product, pageTitle: product.name, currentPage: 'admin-product-detail', cart: {items: cartItems}})
         })
     })
-
 }
 
 exports.postDeleteProduct = (req, res) => {
-
     const productId = req.params.id
 
-    Product.fetchAll(products => {
-        products = products.filter((product) => product.id != productId);
-        Product.saveChanges(products)
+    Product.deleteById(productId)
+    .then(() => {
         res.redirect('/admin/admin-products')
     })
-
 }
 
 exports.getEditProduct = (req, res) => {
-
     const productId = req.params.id
+    const user = req.user
 
-    Product.fetchAll(products => {
-        const product = products.filter((p) => p.id == productId)[0]
-
-        Cart.getCart(cart => {
-            res.render(path.join(__dirname, '..', 'views', 'admin', 'edit-product'), {product: product, pageTitle: 'Editar produto', currentPage: 'edit-product', cart: cart})
-        })
+    Product.findById(productId)
+    .then(product => {
+        user.getCartItems()
+        .then(cartItems => {
+                res.render(path.join(__dirname, '..', 'views', 'admin', 'edit-product'), {product: product, pageTitle: 'Editar produto', currentPage: 'edit-product', cart: {items: cartItems}})
+            })
     })
-
 }
 
 exports.postEditProduct = (req, res) => {
-
     const productId = req.params.id
     const updatedName = req.body.productName
     const updatedUrl = req.body.productImage
     const updatedPrice = req.body.productPrice
     const updatedDescription = req.body.productDescription
+    const product = new Product(updatedName, updatedUrl, updatedPrice, updatedDescription, productId)
 
-    Product.fetchAll(products => {
-        products = products.map((product) => {
-            if(product.id == productId) {
-                product.name = updatedName
-                product.url = updatedUrl
-                product.price = updatedPrice
-                product.description = updatedDescription
-            }
-    
-            return product
-        })
-        
-        Product.saveChanges(products)
+    product.save()
+    .then(() => {
         res.redirect('/admin/admin-products')
-
     })
-    
-
 }
