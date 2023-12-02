@@ -11,7 +11,7 @@
           <p class="mt-5 mb-4 text-secondary"><%= product.description %></p>
           <hr>
           <div class="text-center">
-            <h2 class="">R$<%= product.price %></h3> 
+            <h2 class="">R$<%= product.price.toFixed(2) %></h3> 
             <form class="d-block mx-auto" method="POST" action="/admin/delete-product/<%= product._id %>">
                 <button type="submit" class="btn btn-outline-danger rounded-0 me-1">Deletar</button>
                 <a href="/admin/edit-product/<%= product._id %>" class="btn btn-outline-success rounded-0 ms-1">Editar</a>

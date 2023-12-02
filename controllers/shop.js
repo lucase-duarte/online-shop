@@ -2,33 +2,22 @@ const path = require('path')
 const Product = require('../models/product')
 
 exports.getIndex = (req, res) => {
-const user = req.user
-
-    Product.fetchAll()
+    Product.find()
     .then(products => {
-        user.getCartItems()
-        .then(cartItems => {
-            res.render(path.join(__dirname, '..', 'views', 'shop', 'index'), {products: products, pageTitle: 'Online Shop', currentPage: 'index', cart: {items: cartItems}})
-        })
+        res.render(path.join(__dirname, '..', 'views', 'shop', 'index'), {products: products, pageTitle: 'Online Shop', currentPage: 'index', cart: {items: []}})
     })
 }
 
 exports.getProductDetail = (req, res) => {
     const productId = req.params.id
-    const user = req.user
 
     Product.findById(productId)
     .then(product => {
-        user.getCartItems()
-        .then(cartItems => {
-            res.render(path.join(__dirname, '..', 'views', 'shop', 'product-detail'), {product: product, pageTitle: product.name, currentPage: 'index', cart: {items: cartItems}})
-        })
+        res.render(path.join(__dirname, '..', 'views', 'shop', 'product-detail'), {product: product, pageTitle: product.name, currentPage: 'index', cart: {items: []}})
     })
 }
 
 exports.getCart = (req, res) => {
-    const user = req.user
-    
     user.getCartItems()
     .then(cartItems => {
         res.render(path.join(__dirname, '..', 'views', 'shop', 'cart'), {pageTitle: 'Carrinho', currentPage: 'cart', cart: {items: cartItems, totalPrice: user.cart.totalPrice}})

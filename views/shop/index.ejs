@@ -14,7 +14,7 @@
                 <p class="card-text text-truncate text-secondary"><%= product.description %></p>
               </div>
               <div class="card-footer bg-body-tertiary fw-bold fs-4">
-                <h3 class="fw-bold">R$<%= product.price %></h3>
+                <h3 class="fw-bold">R$<%= product.price.toFixed(2) %></h3>
               </div>
               <a href="/product-detail/<%= product._id %>" class="stretched-link"></a>
             </div>
